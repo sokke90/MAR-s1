@@ -33,3 +33,12 @@ CMakeFiles
 Makefile
 cmake_install.cmake
 install_manifest.txt
+
+# binaries
+bin/*
+
+# OpenGL files
+glfw3.pc
+glfw3Config.cmake
+glfw3ConfigVersion.cmake
+glfw_config.h

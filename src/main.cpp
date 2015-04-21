@@ -1,4 +1,5 @@
-﻿#define GLFW_INCLUDE_GLU
+﻿#define GL_BGR_EXT 0x80e0 // for use with llvm on apple
+#define GLFW_INCLUDE_GLU
 #include <GLFW/glfw3.h>
 #include <opencv/cv.h>
 #include <opencv/highgui.h>
@@ -6,8 +7,8 @@
 #include <Eigen/StdVector>
 
 //camera settings
-const int camera_width = 640;
-const int camera_height = 480;
+const int camera_width = 1280; // higher resolution to work on apple
+const int camera_height = 720; // higher resolution to work on apple
 const int virtual_camera_angle = 60;
 unsigned char bkgnd[camera_width*camera_height * 3];
 
@@ -72,6 +73,8 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr)
 	gluOrtho2D(0.0, camera_width, 0.0, camera_height);
 
 	glRasterPos2i(0, camera_height - 1);
+  //cv::CvtColor(buffer, buffer, CV_BGR2RBG )
+  //glDrawPixels(camera_width, camera_height, GL_RGB, GL_UNSIGNED_BYTE, bkgnd);
 	glDrawPixels(camera_width, camera_height, GL_BGR_EXT, GL_UNSIGNED_BYTE, bkgnd);
 
 	glPopMatrix();
@@ -91,6 +94,7 @@ int main(int argc, char* argv[])
 	// initialize the window system
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow(camera_width, camera_height, "Combine", NULL, NULL);
+
 	if (!window)
 	{
 		glfwTerminate();
@@ -110,6 +114,8 @@ int main(int argc, char* argv[])
 	// setup OpenCV
 	cv::Mat img_bgr;
 	cv::VideoCapture cap;
+  cap.set(CV_CAP_PROP_FRAME_WIDTH, camera_width);
+  cap.set(CV_CAP_PROP_FRAME_HEIGHT, camera_height);
 	initVideoStream(cap);
 
 	/* Loop until the user closes the window */
