@@ -7,8 +7,9 @@
 #include <Eigen/StdVector>
 
 //camera settings
-const int camera_width = 1280; // higher resolution to work on apple
-const int camera_height = 720; // higher resolution to work on apple
+
+const int camera_width = 640; // higher resolution to work on apple
+const int camera_height = 480; // higher resolution to work on apple
 const int virtual_camera_angle = 60;
 unsigned char bkgnd[camera_width*camera_height * 3];
 
