@@ -20,6 +20,7 @@ FIND_PACKAGE(OpenCV REQUIRED)
 # Set header and source files
 SET(MAR_Test_SOURCES
     src/main.cpp
+    src/markertracker/markertracker.cpp
 )
 
 # define executable

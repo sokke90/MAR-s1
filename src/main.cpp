@@ -5,6 +5,7 @@
 #include <opencv/highgui.h>
 #include <Eigen/Dense>
 #include <Eigen/StdVector>
+#include "markertracker/markertracker.h"
 
 //camera settings
 
@@ -87,6 +88,7 @@ void display(GLFWwindow* window, const cv::Mat &img_bgr)
 int main(int argc, char* argv[])
 {
 	GLFWwindow* window;
+	MarkerTracker markerTracker;
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -130,6 +132,9 @@ int main(int argc, char* argv[])
 			cv::waitKey(1000); // Wait for one sec.
 			continue;
 		}
+
+		// Track markers 
+		markerTracker.find(img_bgr);
 
 		/* Render here */
 		display(window, img_bgr);
