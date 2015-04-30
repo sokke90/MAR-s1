@@ -1,5 +1,7 @@
 #include "markertracker.h"
 
+using namespace cv;
+
 
 MarkerTracker::MarkerTracker() {
 	
@@ -11,24 +13,33 @@ MarkerTracker::MarkerTracker() {
 		
 void MarkerTracker::find(cv::Mat &img_bgr) {
 
-  cv::Mat img_grey, img_thresh;
-  cv::vector<cv::vector<cv::Point>> contours0;
-  cv::vector<cv::Vec4i> hierarchy;
+  Mat img_grey, img_thresh;
+  vector<cv::vector<cv::Point>> contours0;
+  vector<cv::Vec4i> hierarchy;
 
-  cv::cvtColor(img_bgr, img_grey, CV_RGB2GRAY);
-  cv::blur(img_grey,img_grey, cv::Size(3,3));
-  cv::threshold(img_grey,img_thresh,this->thresh,this->max_value,cv::THRESH_BINARY);
-  cv::findContours(img_thresh,
+	// make the image B/W
+	cvtColor(img_bgr, img_grey, CV_RGB2GRAY);
+	
+	
+	blur(img_grey,img_grey, Size(3,3));
+	threshold(img_grey,img_thresh,this->thresh,this->max_value,cv::THRESH_BINARY);
+	
+	// Find contours
+	findContours(img_thresh,
 		  contours0,
 		  hierarchy,
-		  CV_RETR_TREE,
-		  CV_CHAIN_APPROX_SIMPLE,
-		  cv::Point(0,0));
-  contours.resize(contours0.size());
-  for (size_t i = 0; i < contours0.size(); ++i) {
-	  // Process Polygons here
-	  cv::approxPolyDP(cv::Mat(contours0[i]), contours[i], 3, true); 
-	  cv::drawContours(img_bgr,contours,i,cv::Scalar(0,165,255),2,8,hierarchy, 0, cv::Point());
-  }
+		  RETR_TREE,
+		  CHAIN_APPROX_SIMPLE,
+		  Point(0,0));
+		  
+		 
+	contours.resize(contours0.size());
+	
+	
+	for (size_t i = 0; i < contours0.size(); ++i) {
+		// Process Polygons here
+		approxPolyDP(Mat(contours0[i]), contours[i], 4, true); 
+		drawContours(img_bgr,contours,i,Scalar(0,165,255),2,8,hierarchy, 0, cv::Point());
+	}
 	
 }
