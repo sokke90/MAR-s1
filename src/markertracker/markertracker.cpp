@@ -76,10 +76,10 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 				cvScalar(200,200,250), 1, CV_AA);
 			
 			Scalar circlecolor = Scalar(84,223,93);
-			circle(img_bgr, contours[i][0], 5, circlecolor, 5);
-			circle(img_bgr, contours[i][1], 5, circlecolor, 5);
-			circle(img_bgr, contours[i][2], 5, circlecolor, 5);
-			circle(img_bgr, contours[i][3], 5, circlecolor, 5);
+			//circle(img_bgr, contours[i][0], 5, circlecolor, 5);
+			//circle(img_bgr, contours[i][1], 5, circlecolor, 5);
+			//circle(img_bgr, contours[i][2], 5, circlecolor, 5);
+			//circle(img_bgr, contours[i][3], 5, circlecolor, 5);
 			
 			
 			// Circle in the middle
@@ -88,8 +88,17 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 			
 			//cout << sampledOnLinePoints[0].size() << " - ";
 			
-					Point point1 = contours[i][0];
-					Point point2 = contours[i][1];
+			for (int kk = 0; kk < 4; kk++ )
+			 {
+					Point point1 = contours[i][kk];
+					Point point2;
+					
+					if (kk < 3)
+						point2 = contours[i][kk+1];
+					else
+						point2 = contours[i][0];
+					
+					
 					
 				
 					int distanceX = point2.x - point1.x;
@@ -102,16 +111,26 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 					
 					
 					
-					for (int j = 0; j < 8; j++)
+					for (int j = 1; j < 7; j++)
 					{
-							circle(img_bgr, Point(distanceX/7*j+point1.x, distanceY/7*j+point1.y), 1, circlecolor, 5);
+							//circle(img_bgr, Point(distanceX/7*j+point1.x, distanceY/7*j+point1.y), 1, circlecolor, 5);
 							
-							
+							line(img_bgr,
+								Point(distanceX/7.0*j+point1.x+distanceY/14.0,
+									distanceY/7.0*j+point1.y-distanceX/14.0),
+									
+								Point(distanceX/7.0*j+point1.x-distanceY/14.0, 
+									distanceY/7.0*j+point1.y+distanceX/14.0),
+								Scalar(0,165,255),
+								1,
+								8
+							);
 							
 							//cout << "(" << distanceX/7*j+point1.x << ":";
 							//cout << distanceY/7*j+point1.y << ")";
 								
 					}
+				}
 			
 			
 			/*
@@ -122,12 +141,12 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 			}
 			
 			*/
-			drawContours(img_bgr,contours,i,Scalar(0,165,255),2,8,hierarchy, 0, cv::Point());
+			drawContours(img_bgr,contours,i,Scalar(93,239,255),1,8,hierarchy, 0, cv::Point());
 			
 			
 			
 			
-			rectangle( img_bgr, boundRect[i].tl(), boundRect[i].br(), Scalar(100,165,255), 2, 8, 0 );
+			//rectangle( img_bgr, boundRect[i].tl(), boundRect[i].br(), Scalar(100,165,255), 2, 8, 0 );
 		}
 	}
 	
