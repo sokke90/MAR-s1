@@ -2,8 +2,8 @@
 
 ## Requirements
 
-* GCC / G++ >= 4.9
-* OpenCV 2.4.10
+* GCC / G++ 4.8.2
+* OpenCV 2.4.11
 * OpenGL
 
 ## Included 
