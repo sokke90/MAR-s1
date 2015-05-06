@@ -15,6 +15,10 @@ class MarkerTracker {
 		double max_value;
 		cv::vector<cv::vector<cv::Point>> contours;
 };
+
+int getDelta(int value1, int value2);
+int getMiddle( int value1, int value2);
+cv::vector<cv::Point> getSeventh(int divider, cv::Point point1, cv::Point point2);
 		
 		
 		
