@@ -111,34 +111,62 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 					 
 					 float TheVectorLength;
 					 Vec2f TheVectorDirection;
-					
-				for (int j = 1; j < 7; j++)
-				{
-						
-						// Trying to get a Matrix from one line here!
-						
-						
-						Vec2f TheVectorStart(distanceX/7.0*j+point1.x+distanceY/14.0, distanceY/7.0*j+point1.y-distanceX/14.0);
-						
-						// Save some calulations and just doing them once per outline
-						if (j==1)
-						{
-							TheVectorDirection[0] = 
-								- (distanceX/7.0*j+point1.x+distanceY/14.0)
-								+ (distanceX/7.0*j+point1.x-distanceY/14.0)
+					 Vec2f TheVectorDirectionNorm;
+					 //int TheVectorLength;
+					 
+					 		TheVectorDirection[0] = 
+								- (distanceX/7.0+point1.x+distanceY/14.0)
+								+ (distanceX/7.0+point1.x-distanceY/14.0)
 								;
 								
 							TheVectorDirection[1] =	
-								- (distanceY/7.0*j+point1.y-distanceX/14.0)
-								+ (distanceY/7.0*j+point1.y+distanceX/14.0);
+								- (distanceY/7.0+point1.y-distanceX/14.0)
+								+ (distanceY/7.0+point1.y+distanceX/14.0);
 								
 							 
 						
 						
 							TheVectorLength = std::sqrt(std::pow((double)TheVectorDirection[0],2)+std::pow((double)TheVectorDirection[1],2));
+							
+							
+							TheVectorDirectionNorm[0] =
+								TheVectorDirection[0] / TheVectorLength;
+							
+							TheVectorDirectionNorm[1] =
+								TheVectorDirection[1] / TheVectorLength;
+					
+					
+						
+						cv::Mat TheResultMatrix = cv::Mat((int)ceil(TheVectorLength), 7*3, img_grey.type())	;
+					
+					
+					
+				for (int j = 1; j < 7; j++)
+				{
+						
+						// Trying to get a Matrix from one line here!
+						Vec2f TheVectorStart(distanceX/7.0*j+point1.x+distanceY/14.0, distanceY/7.0*j+point1.y-distanceX/14.0);
+						
+						float TheCurrentLength = 0;
+						int TheInlineCounter = 0;
+						
+						while (TheCurrentLength < TheVectorLength)
+						{
+							//cout << TheVectorDirectionNorm * TheCurrentLength << " \n";
+							Point2f TheCurrentPoint ( TheVectorStart + TheVectorDirectionNorm * TheCurrentLength);
+							
+							int ThePixelValue = sampleSubPix(img_grey, TheCurrentPoint);
+							
+							TheResultMatrix.at<int>(j*3-2, TheInlineCounter) = ThePixelValue;
+							
+							cout << "\n(" << j*3-2 << " : " << TheInlineCounter << ") = " << ThePixelValue;
+							
+
+							TheInlineCounter++;
+							TheCurrentLength++;
 						}
 						
-						
+						cout << (int)ceil(TheVectorLength) << "x" << 7*3 << "\n\n\nStart: \n" << TheResultMatrix.size() << TheResultMatrix << "\n";
 						//cout << TheVectorDirection[0] / TheVectorLength << " : " << TheVectorDirection[1] / TheVectorLength << "\n" ;
 						
 							

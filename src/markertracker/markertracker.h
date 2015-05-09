@@ -19,7 +19,8 @@ class MarkerTracker {
 int getDelta(int value1, int value2);
 int getMiddle( int value1, int value2);
 cv::vector<cv::Point> getSeventh(int divider, cv::Point point1, cv::Point point2);
-		
+int sampleSubPix(const cv::Mat &pSrc, const cv::Point2f &p);
+
 		
 		
 #endif
