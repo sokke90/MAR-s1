@@ -26,6 +26,7 @@
 *.exe
 *.out
 *.app
+MAR_Test
 
 # CMake
 CMakeCache.txt
