@@ -104,33 +104,44 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 					int distanceX = point2.x - point1.x;
 					int distanceY = point2.y - point1.y;
 					
-					//cout << "\n\n" << point1.x << " : " << point1.y << " \n ";
-					//cout << point2.x << " : " << point2.y << " \n ";
-					//cout << distanceX << " \n ";
-					//cout << distanceY << " \n ";
+					/*
+					 * 
+					 * TODO Draw all lines are uncommented here!
+					 */
+					 
+					 float TheVectorLength;
+					 Vec2f TheVectorDirection;
 					
-					
-					
-					// Trying to get a Matrix from one line here!
-					
-					
-					Vec2f TheVectorStart(distanceX/7.0+point1.x+distanceY/14.0, distanceY/7.0+point1.y-distanceX/14.0);
-					
-					Vec2f TheVectorDirection(
-						- (distanceX/7.0+point1.x+distanceY/14.0)
-						+ (distanceX/7.0+point1.x-distanceY/14.0)
-						, 
+				for (int j = 1; j < 7; j++)
+				{
 						
-						- (distanceY/7.0+point1.y-distanceX/14.0)
-						+ (distanceY/7.0+point1.y+distanceX/14.0)
+						// Trying to get a Matrix from one line here!
 						
-					);
-					
-					float TheVectorLength = std::sqrt(std::pow((double)TheVectorDirection[0],2)+std::pow((double)TheVectorDirection[1],2));
-					
-					cout << TheVectorDirection[0] / TheVectorLength << " : " << TheVectorDirection[1] / TheVectorLength << "\n" ;
-					
 						
+						Vec2f TheVectorStart(distanceX/7.0*j+point1.x+distanceY/14.0, distanceY/7.0*j+point1.y-distanceX/14.0);
+						
+						// Save some calulations and just doing them once per outline
+						if (j==1)
+						{
+							TheVectorDirection[0] = 
+								- (distanceX/7.0*j+point1.x+distanceY/14.0)
+								+ (distanceX/7.0*j+point1.x-distanceY/14.0)
+								;
+								
+							TheVectorDirection[1] =	
+								- (distanceY/7.0*j+point1.y-distanceX/14.0)
+								+ (distanceY/7.0*j+point1.y+distanceX/14.0);
+								
+							 
+						
+						
+							TheVectorLength = std::sqrt(std::pow((double)TheVectorDirection[0],2)+std::pow((double)TheVectorDirection[1],2));
+						}
+						
+						
+						//cout << TheVectorDirection[0] / TheVectorLength << " : " << TheVectorDirection[1] / TheVectorLength << "\n" ;
+						
+							
 						line(img_bgr,
 								Point(TheVectorStart[0],
 									TheVectorStart[1]),
@@ -140,44 +151,10 @@ void MarkerTracker::find(cv::Mat &img_bgr) {
 								Scalar(0,165,255),
 								1,
 								8
-							);
-	
-					
-										
-					
-					/*Point(distanceX/7.0*j+point1.x+distanceY/14.0,
-							distanceY/7.0*j+point1.y-distanceX/14.0);
-							
-					
-					Point(distanceX/7.0*j+point1.x-distanceY/14.0, 
-							distanceY/7.0*j+point1.y+distanceX/14.0);*/
+							); // line()
 
-					
-
-					
-					/*
-					 * 
-					 * TODO Draw all lines are uncommented here!
-					
-					for (int j = 1; j < 7; j++)
-					{
-							//circle(img_bgr, Point(distanceX/7*j+point1.x, distanceY/7*j+point1.y), 1, circlecolor, 5);
-							
-							line(img_bgr,
-								Point(distanceX/7.0*j+point1.x+distanceY/14.0,
-									distanceY/7.0*j+point1.y-distanceX/14.0),
-									
-								Point(distanceX/7.0*j+point1.x-distanceY/14.0, 
-									distanceY/7.0*j+point1.y+distanceX/14.0),
-								Scalar(0,165,255),
-								1,
-								8
-							);
-							
-							//cout << "(" << distanceX/7*j+point1.x << ":";
-							//cout << distanceY/7*j+point1.y << ")";
 								
-					}*/
+					} // for (int j = 1; j < 7; j++)
 					
 					
 					
